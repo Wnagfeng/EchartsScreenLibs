@@ -35,6 +35,18 @@ module.exports = {
         commonjs(),
         babel({
             exclude: "node_modules/**",
+            plugins: [
+                [
+                    "@babel/plugin-transform-runtime",
+                    {
+                        "absoluteRuntime": true,
+                        // "corejs": false,
+                        // "helpers": true,
+                        // "regenerator": true,
+                        // "version": "7.0.0-beta.0"
+                    }
+                ]
+            ]
         }),
         json(),
         postcss({
