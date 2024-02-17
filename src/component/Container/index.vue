@@ -2,9 +2,7 @@
   <!-- 实现Container效果 -->
   <div class="ContainerWrapper" id="Container">
     <template v-if="realy">
-      <div class="slotBox">
         <slot></slot>
-      </div>
     </template>
   </div>
 </template>
@@ -73,7 +71,7 @@ const UpdataStyleScale = () => {
   // 高度压缩比
   const heightScale = currentHeight / realHeight
   container.style.transform = `scale(${widthScale}, ${heightScale})`
-  console.log('执行了')
+  // console.log('执行了')
 }
 const Onresize = () => {
   init()
@@ -108,7 +106,11 @@ export default {
   left: 0;
   overflow: hidden;
   z-index: 9999;
-  background-color: red;
+  //background-color: red;
   transform-origin: left top;
+  .slotBox{
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

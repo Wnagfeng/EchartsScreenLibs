@@ -20,6 +20,9 @@
               <animate attributeName="stroke" :values="inSideColorAnimation" :dur="props.duration+'s'" repeatCount="indefinite"/>
             </circle>
         </svg>
+ <div class="LoadingTextWrapper">
+   <slot></slot>
+ </div>
     </div>
 
 </template>
@@ -63,8 +66,19 @@ export default {
 </script>
 <style  lang="scss">
 .SvgLoadingWrapper {
-    width: 200px;
-    height: 200px;
-    margin: auto;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+align-items: center;
+    //width: 200px;
+    //height: 200px;
+    //margin: auto;
+  .LoadingTextWrapper{
+    margin-top: 20px;
+    margin-left: 15px;
+    color: #fff;
+  }
 }
 </style>
