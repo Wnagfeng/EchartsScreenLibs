@@ -37,6 +37,7 @@
     "vue": "3.2.13"
   },
   "dependencies": {
+    "loadsh": "^0.0.4",
     "uuid": "^9.0.1"
   }
 }

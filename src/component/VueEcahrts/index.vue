@@ -13,14 +13,16 @@ const props = defineProps({
 })
 let Dom = null;
 let cahrts = null
-watch(() => props.opstion, () => {
-
+watch(() => props.data.opstion, () => {
+    cahrts.setOption(props.data.opstion)
+    console.log("改变了")
 })
 
 onMounted(() => {
     Dom = document.getElementById("VueEcahrtsWrapper")
-    cahrts = echarts.init(Dom, props.data.ThemeColor ? props.data.ThemeColor : "null")
+    cahrts = echarts.init(Dom, props.data.ThemeColor ? "null" : "null")
     cahrts.setOption(props.data.opstion)
+    console.log(props.value)
 })
 
 </script>
