@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "loadsh": "^0.0.4",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "vue-seamless-scroll": "^1.1.23"
   }
 }
