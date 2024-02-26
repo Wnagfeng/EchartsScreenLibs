@@ -2914,7 +2914,7 @@
   const _hoisted_1 = { class: "TabelHeaderWrapper" };
   const _hoisted_2 = ["align"];
   const _hoisted_3 = { class: "TabelColumWrapper" };
-  const _hoisted_4 = ["align"];
+  const _hoisted_4 = ["align", "innerHTML"];
 
   const __default__ = {
       name: 'BaseScoreList'  // 添加name属性
@@ -2967,6 +2967,10 @@
               duration: 5000
 
           }
+      },
+      data: {
+          type: Object,
+          default: {}
       }
   },
     setup(__props) {
@@ -2990,6 +2994,7 @@
   // 处理头部数据
   const HandelHeaderdata = () => {
       const Headerdata = cloneDeep_1(props.config.header);
+      console.log(props);
       const HeaderStyle = cloneDeep_1(props.config.headerStyle);
       const Alings = cloneDeep_1(props.config.alings);
       if (props.config.header.length == 0) {
@@ -3028,16 +3033,16 @@
   // 处理内容数据
   const HandelRowsdata = () => {
       const data = cloneDeep_1(props.config.data);
-      const columnIndexStyle = cloneDeep_1(props.config.columnIndexStyle);
+      cloneDeep_1(props.config.columnIndexStyle);
       const columnstyle = cloneDeep_1(props.config.columnstyle);
       const bgcolor1 = cloneDeep_1(props.config.BGCOLOR1);
       const bgcolor2 = cloneDeep_1(props.config.BGCOLOR2);
-      if (props.config.index) {
-          data.forEach((rows, index) => {
-              rows.unshift(index + 1);
-          });
-          columnstyle.unshift(columnIndexStyle);
-      }
+      // if (props.config.index) {
+      //     data.forEach((rows, index) => {
+      //         rows.unshift(index + 1)
+      //     })
+      //     columnstyle.unshift(columnIndexStyle)
+      // }
       DATA.value = data.map((item, index) => {
           return {
               data: item,
@@ -3086,16 +3091,21 @@
       if (ISLAST >= 0) {
           CURRENTINDEX.value = ISLAST;
       }
-      console.log(CURRENTDATA);
       await new Promise(resolve => setTimeout(resolve, titme - awaitTime));
       await StartAnimation();
   };
+  vue.watch(props.config.data, (data) => {
+      props.config.data = data;
+      HandelRowsdata();
+      // StartAnimation()
+  });
   vue.onMounted(() => {
       HandelHeaderdata();
       HandelHeaderAverageWidth();
       HandelRowsdata();
       HandelAverageHeight();
       StartAnimation();
+      console.log(props.config);
   });
 
   return (_ctx, _cache) => {
@@ -3126,7 +3136,7 @@
         (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(CURRENTDATA.value, (item, index) => {
           return (vue.openBlock(), vue.createElementBlock("div", {
             key: item.ROWindex,
-            class: "Colum",
+            class: "Colum headertext",
             style: vue.normalizeStyle({ backgroundColor: item.ROWindex % 2 === 0 ? ODDROWBGC.value : EVENROWBGC.value, lineHeight: `${COLUMNHEIGHT.value[index]}px`, height: `${COLUMNHEIGHT.value[index]}px` })
           }, [
             (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(item.data, (iten, index) => {
@@ -3134,8 +3144,9 @@
                 key: index+iten,
                 class: "item headertext",
                 align: ALINGS.value[index],
-                style: vue.normalizeStyle({ width: `${AVERAGEWIDTH.value[index]}px`, ...COLUMSTYLE.value[index], fontSize: `${props.config.columnFontSize}px`, })
-              }, vue.toDisplayString(iten), 13 /* TEXT, STYLE, PROPS */, _hoisted_4))
+                style: vue.normalizeStyle({ width: `${AVERAGEWIDTH.value[index]}px`, ...COLUMSTYLE.value[index], fontSize: `${props.config.columnFontSize}px`, }),
+                innerHTML: iten
+              }, null, 12 /* STYLE, PROPS */, _hoisted_4))
             }), 128 /* KEYED_FRAGMENT */))
           ], 4 /* STYLE */))
         }), 128 /* KEYED_FRAGMENT */))

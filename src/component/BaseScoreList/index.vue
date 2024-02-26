@@ -17,12 +17,13 @@
         </div>
         <div class="TabelColumWrapper">
             <template v-for="(item, index) in CURRENTDATA" :key="item.ROWindex">
-                <div class="Colum"
+                <div class="Colum headertext"
                     :style="{ backgroundColor: item.ROWindex % 2 === 0 ? ODDROWBGC : EVENROWBGC, lineHeight: `${COLUMNHEIGHT[index]}px`, height: `${COLUMNHEIGHT[index]}px` }">
                     <template v-for="(iten, index) in item.data" :key="index+iten">
                         <div class="item headertext" :align="ALINGS[index]"
-                            :style="{ width: `${AVERAGEWIDTH[index]}px`, ...COLUMSTYLE[index], fontSize: `${props.config.columnFontSize}px`, }">
-                            {{ iten }}</div>
+                            :style="{ width: `${AVERAGEWIDTH[index]}px`, ...COLUMSTYLE[index], fontSize: `${props.config.columnFontSize}px`, }"
+                            v-html="iten">
+                        </div>
                     </template>
                 </div>
             </template>
@@ -33,7 +34,7 @@
 </template>
 
 <script setup >
-import { onMounted, ref, defineProps } from 'vue'
+import { onMounted, ref, defineProps, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import init from '../../hooks/useScreen'
 import cloneDeep from 'loadsh/cloneDeep'
@@ -97,11 +98,16 @@ const props = defineProps({
             duration: 5000
 
         }
+    },
+    data: {
+        type: Object,
+        default: {}
     }
 })
 // 处理头部数据
 const HandelHeaderdata = () => {
     const Headerdata = cloneDeep(props.config.header)
+    console.log(props)
     const HeaderStyle = cloneDeep(props.config.headerStyle)
     const Alings = cloneDeep(props.config.alings)
     if (props.config.header.length == 0) {
@@ -144,12 +150,12 @@ const HandelRowsdata = () => {
     const columnstyle = cloneDeep(props.config.columnstyle)
     const bgcolor1 = cloneDeep(props.config.BGCOLOR1)
     const bgcolor2 = cloneDeep(props.config.BGCOLOR2)
-    if (props.config.index) {
-        data.forEach((rows, index) => {
-            rows.unshift(index + 1)
-        })
-        columnstyle.unshift(columnIndexStyle)
-    }
+    // if (props.config.index) {
+    //     data.forEach((rows, index) => {
+    //         rows.unshift(index + 1)
+    //     })
+    //     columnstyle.unshift(columnIndexStyle)
+    // }
     DATA.value = data.map((item, index) => {
         return {
             data: item,
@@ -198,16 +204,21 @@ const StartAnimation = async () => {
     if (ISLAST >= 0) {
         CURRENTINDEX.value = ISLAST
     }
-    console.log(CURRENTDATA)
     await new Promise(resolve => setTimeout(resolve, titme - awaitTime))
     await StartAnimation()
 }
+watch(props.config.data, (data) => {
+    props.config.data = data
+    HandelRowsdata()
+    // StartAnimation()
+})
 onMounted(() => {
     HandelHeaderdata()
     HandelHeaderAverageWidth()
     HandelRowsdata()
     HandelAverageHeight()
     StartAnimation()
+    console.log(props.config)
 })
 </script>
 <script>

@@ -2911,7 +2911,7 @@ var cloneDeep_1 = cloneDeep;
 const _hoisted_1 = { class: "TabelHeaderWrapper" };
 const _hoisted_2 = ["align"];
 const _hoisted_3 = { class: "TabelColumWrapper" };
-const _hoisted_4 = ["align"];
+const _hoisted_4 = ["align", "innerHTML"];
 
 const __default__ = {
     name: 'BaseScoreList'  // 添加name属性
@@ -2964,6 +2964,10 @@ var script = /*#__PURE__*/Object.assign(__default__, {
             duration: 5000
 
         }
+    },
+    data: {
+        type: Object,
+        default: {}
     }
 },
   setup(__props) {
@@ -2987,6 +2991,7 @@ const props = __props;
 // 处理头部数据
 const HandelHeaderdata = () => {
     const Headerdata = cloneDeep_1(props.config.header);
+    console.log(props);
     const HeaderStyle = cloneDeep_1(props.config.headerStyle);
     const Alings = cloneDeep_1(props.config.alings);
     if (props.config.header.length == 0) {
@@ -3025,16 +3030,16 @@ const HandelHeaderAverageWidth = () => {
 // 处理内容数据
 const HandelRowsdata = () => {
     const data = cloneDeep_1(props.config.data);
-    const columnIndexStyle = cloneDeep_1(props.config.columnIndexStyle);
+    cloneDeep_1(props.config.columnIndexStyle);
     const columnstyle = cloneDeep_1(props.config.columnstyle);
     const bgcolor1 = cloneDeep_1(props.config.BGCOLOR1);
     const bgcolor2 = cloneDeep_1(props.config.BGCOLOR2);
-    if (props.config.index) {
-        data.forEach((rows, index) => {
-            rows.unshift(index + 1);
-        });
-        columnstyle.unshift(columnIndexStyle);
-    }
+    // if (props.config.index) {
+    //     data.forEach((rows, index) => {
+    //         rows.unshift(index + 1)
+    //     })
+    //     columnstyle.unshift(columnIndexStyle)
+    // }
     DATA.value = data.map((item, index) => {
         return {
             data: item,
@@ -3083,16 +3088,21 @@ const StartAnimation = async () => {
     if (ISLAST >= 0) {
         CURRENTINDEX.value = ISLAST;
     }
-    console.log(CURRENTDATA);
     await new Promise(resolve => setTimeout(resolve, titme - awaitTime));
     await StartAnimation();
 };
+watch(props.config.data, (data) => {
+    props.config.data = data;
+    HandelRowsdata();
+    // StartAnimation()
+});
 onMounted(() => {
     HandelHeaderdata();
     HandelHeaderAverageWidth();
     HandelRowsdata();
     HandelAverageHeight();
     StartAnimation();
+    console.log(props.config);
 });
 
 return (_ctx, _cache) => {
@@ -3123,7 +3133,7 @@ return (_ctx, _cache) => {
       (openBlock(true), createElementBlock(Fragment, null, renderList(CURRENTDATA.value, (item, index) => {
         return (openBlock(), createElementBlock("div", {
           key: item.ROWindex,
-          class: "Colum",
+          class: "Colum headertext",
           style: normalizeStyle({ backgroundColor: item.ROWindex % 2 === 0 ? ODDROWBGC.value : EVENROWBGC.value, lineHeight: `${COLUMNHEIGHT.value[index]}px`, height: `${COLUMNHEIGHT.value[index]}px` })
         }, [
           (openBlock(true), createElementBlock(Fragment, null, renderList(item.data, (iten, index) => {
@@ -3131,8 +3141,9 @@ return (_ctx, _cache) => {
               key: index+iten,
               class: "item headertext",
               align: ALINGS.value[index],
-              style: normalizeStyle({ width: `${AVERAGEWIDTH.value[index]}px`, ...COLUMSTYLE.value[index], fontSize: `${props.config.columnFontSize}px`, })
-            }, toDisplayString(iten), 13 /* TEXT, STYLE, PROPS */, _hoisted_4))
+              style: normalizeStyle({ width: `${AVERAGEWIDTH.value[index]}px`, ...COLUMSTYLE.value[index], fontSize: `${props.config.columnFontSize}px`, }),
+              innerHTML: iten
+            }, null, 12 /* STYLE, PROPS */, _hoisted_4))
           }), 128 /* KEYED_FRAGMENT */))
         ], 4 /* STYLE */))
       }), 128 /* KEYED_FRAGMENT */))
