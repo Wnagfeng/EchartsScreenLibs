@@ -1,5 +1,5 @@
 import SvgLoading from './component/Loading/inedx'
-import FlyBox from './component/Container/inedx'
+import FlyBox from './component/FlyBox/inedx'
 import Container from './component/Container/inedx'
 import VueEcahrts from "./component/VueEcahrts";
 import BaseScoreList from './component/BaseScoreList/index'

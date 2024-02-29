@@ -33,6 +33,7 @@
 <script setup>
 import { ref, computed, onMounted, defineProps } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
+import { createClipPath } from 'echarts/lib/chart/helper/createClipPathFromCoordSys';
 const width = ref(0)
 const height = ref(0)
 const uuid = uuidv4()
@@ -47,7 +48,9 @@ const props = defineProps({
   // 添加你的自定义属性
 })
 onMounted(() => {
+   console.log("挂载了")
   const Wrapper = document.getElementById(FlyBoxWrapperId);
+   console.log(Wrapper.clientHeight)
   width.value = Wrapper.clientWidth
   height.value = Wrapper.clientHeight
 })
@@ -77,7 +80,7 @@ export default {
 
 .SlotBox {
   padding: 10px;
-  width: 100%;
-  height: 100%;
+
+  height: 96%;
 }
 </style>
